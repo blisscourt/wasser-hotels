@@ -54,7 +54,7 @@ export default function Header() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <a
-            href="tel:+2340000000000"
+            href="tel:+2347017482356"
             className="flex items-center gap-2 rounded-full border border-gold-600/60 px-5 py-2.5 text-sm font-semibold text-gold-400 transition-colors hover:bg-gold-500 hover:text-ink"
           >
             <Phone size={16} />
@@ -105,7 +105,7 @@ export default function Header() {
               Book Room
             </button>
             <a
-              href="tel:+2340000000000"
+              href="tel:+2347017482356"
               className="flex items-center justify-center gap-2 rounded-full border border-gold-600/60 px-5 py-3 text-sm font-semibold text-gold-400"
             >
               <Phone size={16} />

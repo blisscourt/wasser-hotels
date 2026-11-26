@@ -101,7 +101,7 @@ export default function RoomDetailPage() {
                 Book Room
               </button>
               <a
-                href={`https://wa.me/2340000000000?text=${message}`}
+                href={`https://wa.me/2347017482356?text=${message}`}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center justify-center gap-2 rounded-full border border-gold-600/60 py-4 text-sm font-semibold uppercase tracking-wider text-gold-400 transition-colors hover:bg-gold-500 hover:text-ink sm:px-10"

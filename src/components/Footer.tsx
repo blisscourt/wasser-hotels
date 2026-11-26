@@ -136,7 +136,7 @@ export default function Footer() {
 
       {/* whatsapp icon  */}
       <a
-        href={`https://wa.me/2348032341690?text=${encodeURIComponent(
+        href={`https://wa.me/2347017482356?text=${encodeURIComponent(
           "Hello Wasser Hotel, I'd like to make a reservation.\n\nRoom Type:\nCheck-in:\nCheck-out:\nAdults:\nChildren:\nPhone Number:",
         )}`}
         target="_blank"
