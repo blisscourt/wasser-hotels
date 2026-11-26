@@ -1,4 +1,4 @@
-import type { FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import Reveal from './Reveal'
 
@@ -20,7 +20,57 @@ const CONTACT_DETAILS = [
   },
 ]
 
+// TODO: replace with your own Formspree form endpoint
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xeagndeb'
+
 export default function Contact() {
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
+
+  const sendEmail = async (e: FormEvent) => {
+    e.preventDefault()
+
+    setIsSubmitting(true)
+    setSuccess(false)
+    setError('')
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: fullName,
+          phone,
+          email,
+          message,
+        }),
+      })
+
+      if (response.ok) {
+        setSuccess(true)
+        setFullName('')
+        setPhone('')
+        setEmail('')
+        setMessage('')
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
+    } catch (err) {
+      console.error(err)
+      setError('Unable to send your message. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <section id="contact" className="bg-charcoal py-24">
       <div className="container-page grid gap-12 lg:grid-cols-2">
@@ -55,35 +105,55 @@ export default function Contact() {
           direction="right"
           as="form"
           className="rounded-2xl border border-line bg-panel/60 p-8"
-          onSubmit={(e: FormEvent) => e.preventDefault()}
+          onSubmit={sendEmail}
         >
           <div className="grid gap-5 sm:grid-cols-2">
             <input
               type="text"
               placeholder="Full Name"
+              required
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               className="rounded-lg border border-line bg-ink px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-gold-500 focus:outline-none sm:col-span-1"
             />
             <input
               type="tel"
               placeholder="Phone Number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               className="rounded-lg border border-line bg-ink px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-gold-500 focus:outline-none sm:col-span-1"
             />
             <input
               type="email"
               placeholder="Email Address"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="rounded-lg border border-line bg-ink px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-gold-500 focus:outline-none sm:col-span-2"
             />
             <textarea
               placeholder="Your Message"
               rows={4}
+              required
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
               className="rounded-lg border border-line bg-ink px-4 py-3 text-sm text-white placeholder:text-neutral-500 focus:border-gold-500 focus:outline-none sm:col-span-2"
             />
           </div>
+
+          {success && (
+            <p className="mt-4 text-sm text-gold-300">
+              Thank you! Your message has been sent. We'll get back to you shortly.
+            </p>
+          )}
+          {error && <p className="mt-4 text-sm text-red-400">{error}</p>}
+
           <button
             type="submit"
-            className="mt-6 w-full rounded-full bg-gold-500 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink transition-colors hover:bg-gold-400"
+            disabled={isSubmitting}
+            className="mt-6 w-full rounded-full bg-gold-500 py-3.5 text-sm font-semibold uppercase tracking-wider text-ink transition-colors hover:bg-gold-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Send Message
+            {isSubmitting ? 'Sending...' : 'Send Message'}
           </button>
         </Reveal>
       </div>
